@@ -98,8 +98,14 @@ def get_file_content(owner, repo, file_path):
         
         
         data = response.json()
+        if data.get("encoding") != "base64":
+            return None
         
-        content = data["content"]
+        if data.get("size", 0) > 500000:
+            return None
+        content = data.get("content")
+        if not content:
+            return ""
         
         
         decoded_content = base64.b64decode(content).decode("utf-8")
@@ -108,11 +114,29 @@ def get_file_content(owner, repo, file_path):
     
     except requests.exceptions.HTTPError as error:
         print("GitHub file API error:", error)
-    except (KeyError, ValueError) as error:
+    except (KeyError, ValueError, UnicodeDecodeError) as error:
         print("Error decoding file content:", error)
         
     return None
-    
+
+def get_selected_file_contents(owner, repo, selected_files):
+
+    file_contents = []
+
+    for file_path in selected_files:
+
+        content = get_file_content(owner, repo, file_path)
+
+        if content is None:
+            continue
+
+        file_contents.append({
+            "path": file_path,
+            "content": content
+        })
+
+    return file_contents
+
     
     
 def categorize_files(files):

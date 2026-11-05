@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from app.core.config import settings
-from app.schemas.repository import RepositoryRequest
+from app.schemas.repository import RepositoryRequest, SelectedFilesRequest
 from app.schemas.repository_response import(
     RepositoryResponse,
     FileContentResponse
@@ -12,6 +12,7 @@ from app.services.github_service import (
     get_repository_tree,
     get_file_content,
     categorize_files,
+    get_selected_file_contents
 )
 
 app = FastAPI(
@@ -78,3 +79,26 @@ def fetch_file_content(owner: str, repo: str, file_path: str):
         path=file_path,
         content=content
     )
+@app.post("/repositories/{owner}/{repo}/selected-files")
+def fetch_selected_files(
+    owner: str,
+    repo: str,
+    request: SelectedFilesRequest
+):
+    file_contents = get_selected_file_contents(
+        owner,
+        repo,
+        request.files
+    )
+
+    if not file_contents:
+        raise HTTPException(
+            status_code=404,
+            detail="No file contents could be fetched"
+        )
+
+    return {
+        "message": "Selected files fetched successfully",
+        "total_files": len(file_contents),
+        "files": file_contents
+    }
