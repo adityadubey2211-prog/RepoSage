@@ -11,6 +11,7 @@ from app.services.github_service import (
     get_repository,
     get_repository_tree,
     get_file_content,
+    categorize_files,
 )
 
 app = FastAPI(
@@ -52,10 +53,12 @@ def analyze_repository(repository: RepositoryRequest):
                 status_code = 404,
                 detail = "Repository tree not found or GitHub API request failed"
             )
+        categorized_files = categorize_files(files)
         return RepositoryResponse(
             message="Repository fetched successfully",
             repository_data=repository_data,
-            files=files
+            files=files,
+            categorized_files=categorized_files
         )
     except ValueError as error:
         raise HTTPException(

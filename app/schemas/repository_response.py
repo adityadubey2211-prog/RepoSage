@@ -19,7 +19,13 @@ class RepositoryResponse(BaseModel):
     message: str
     repository_data: RepositoryData
     files: list[RepositoryFile]
+    categorized_files: CategorizedFiles
 
 class FileContentResponse(BaseModel):
     path:str
     content:str
+
+class CategorizedFiles(BaseModel):
+    source_files: list[str]
+    documentation_files: list[str]
+    config_files: list[str]
