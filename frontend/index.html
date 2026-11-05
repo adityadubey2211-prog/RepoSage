@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080c0a">
+    <title>RepoSage — Understand Any Repository</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="intro-screen" id="introScreen">
+        <div class="intro-orbit"></div>
+        <div class="intro-content">
+            <div class="intro-symbol">R<span>.</span></div>
+            <h1>RepoSage</h1>
+            <p>DECODING THE CODE UNIVERSE</p>
+            <div class="intro-progress"><span></span></div>
+        </div>
+    </div>
+
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+    <div class="noise"></div>
+
+    <header class="navbar" id="navbar">
+        <a href="#home" class="brand">
+            <span class="brand-icon">R<span>.</span></span>
+            <span>Repo<span class="brand-accent">Sage</span></span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="#home" class="nav-link active">Home</a>
+            <a href="#workspace" class="nav-link">Workspace</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="#how" class="nav-link">How to use</a>
+        </nav>
+
+        <div class="nav-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <span id="themeIcon">☀</span>
+            </button>
+            <a href="#workspace" class="nav-cta">Get Started <span>↗</span></a>
+        </div>
+
+        <button class="mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button>
+    </header>
+
+    <main>
+
+        <!-- HERO -->
+        <section class="hero section" id="home">
+            <div class="hero-grid"></div>
+
+            <div class="hero-content reveal">
+                <div class="eyebrow">
+                    <span class="live-dot"></span>
+                    YOUR AI-POWERED REPOSITORY INTELLIGENCE
+                </div>
+
+                <h1>
+                    Code is complex.<br>
+                    <span class="gradient-text">Understanding</span> isn't.
+                </h1>
+
+                <p class="hero-description">
+                    Turn any GitHub repository into something you can actually understand.
+                    Explore architecture, understand files and decode code with AI.
+                </p>
+
+                <div class="hero-buttons">
+                    <a href="#workspace" class="primary-button">
+                        Explore RepoSage <span>↗</span>
+                    </a>
+                    <a href="#how" class="secondary-button">
+                        Discover how it works <span>↓</span>
+                    </a>
+                </div>
+
+                <div class="hero-stats">
+                    <div>
+                        <strong>01</strong>
+                        <span>Connect repository</span>
+                    </div>
+                    <div>
+                        <strong>02</strong>
+                        <span>Choose your mode</span>
+                    </div>
+                    <div>
+                        <strong>03</strong>
+                        <span>Understand your code</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visual reveal">
+                <div class="visual-glow"></div>
+                <div class="code-window">
+                    <div class="window-top">
+                        <div class="window-dots"><i></i><i></i><i></i></div>
+                        <span>repository_analysis.py</span>
+                        <span class="window-status">● LIVE</span>
+                    </div>
+                    <div class="code-content">
+                        <div><span class="line-number">01</span> <span class="code-purple">class</span> <span class="code-green">RepoSage</span>:</div>
+                        <div><span class="line-number">02</span> &nbsp;&nbsp;<span class="code-purple">def</span> <span class="code-yellow">understand</span>(self, repo):</div>
+                        <div><span class="line-number">03</span> &nbsp;&nbsp;&nbsp;&nbsp;structure = <span class="code-blue">analyze</span>(repo)</div>
+                        <div><span class="line-number">04</span> &nbsp;&nbsp;&nbsp;&nbsp;files = <span class="code-blue">explore</span>(structure)</div>
+                        <div><span class="line-number">05</span> &nbsp;&nbsp;&nbsp;&nbsp;insights = <span class="code-blue">decode</span>(files)</div>
+                        <div><span class="line-number">06</span> &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-purple">return</span> insights</div>
+                        <div class="code-cursor"></div>
+                    </div>
+                    <div class="window-bottom">
+                        <span>⌁ AI ENGINE READY</span>
+                        <span>REPOSAGE v2.0</span>
+                    </div>
+                </div>
+
+                <div class="floating-card floating-one">
+                    <span class="floating-icon">✳</span>
+                    <div><strong>AI Analysis</strong><small>Intelligence activated</small></div>
+                </div>
+                <div class="floating-card floating-two">
+                    <span class="floating-icon red-icon">⌘</span>
+                    <div><strong>File Explorer</strong><small>Repository detected</small></div>
+                </div>
+            </div>
+
+            <div class="hero-scroll">
+                <span></span> SCROLL TO EXPLORE
+            </div>
+        </section>
+
+        <!-- WORKSPACE -->
+        <section class="workspace section" id="workspace">
+            <div class="section-heading reveal">
+                <div class="eyebrow"><span class="live-dot"></span> THE INTELLIGENCE WORKSPACE</div>
+                <h2>Your repository.<br><span class="gradient-text">Decoded by AI.</span></h2>
+                <p>Connect a public GitHub repository and choose how you want to understand it.</p>
+            </div>
+
+            <div class="workspace-panel reveal">
+
+                <div class="workspace-top">
+                    <div>
+                        <span class="panel-label">01 / CONNECT SOURCE</span>
+                        <h3>Connect your repository</h3>
+                    </div>
+                    <span class="connection-badge" id="connectionBadge">● NOT CONNECTED</span>
+                </div>
+
+                <div class="repo-input-row">
+                    <div class="input-wrap">
+                        <span class="input-prefix">↗</span>
+                        <input type="url" id="repoUrl" placeholder="https://github.com/username/repository" autocomplete="off">
+                    </div>
+                    <button class="primary-button connect-button" id="connectBtn">
+                        <span>Connect Repository</span> <span>↗</span>
+                    </button>
+                </div>
+                <p class="input-hint">Currently supports public GitHub repositories.</p>
+
+                <div class="repo-info hidden" id="repoInfo">
+                    <div class="repo-info-icon">⌘</div>
+                    <div class="repo-info-text">
+                        <strong id="repoName">Repository</strong>
+                        <span id="repoDescription">Repository connected successfully</span>
+                    </div>
+                    <div class="repo-metrics">
+                        <span>★ <b id="repoStars">0</b></span>
+                        <span>⑂ <b id="repoForks">0</b></span>
+                    </div>
+                </div>
+
+                <div class="workspace-divider"></div>
+
+                <div class="workspace-top mode-heading">
+                    <div>
+                        <span class="panel-label">02 / SELECT YOUR EXPERIENCE</span>
+                        <h3>What do you want to understand?</h3>
+                    </div>
+                </div>
+
+                <div class="mode-grid">
+                    <button class="mode-card selected" data-mode="summary" id="summaryMode">
+                        <div class="mode-card-top">
+                            <span class="mode-icon">◈</span>
+                            <span class="mode-number">MODE 01</span>
+                        </div>
+                        <h3>Complete Repository Summary</h3>
+                        <p>Understand the entire project, its architecture, important files, technologies and execution flow.</p>
+                        <div class="mode-footer"><span>Analyze entire repository</span><span>↗</span></div>
+                    </button>
+
+                    <button class="mode-card" data-mode="file" id="fileMode">
+                        <div class="mode-card-top">
+                            <span class="mode-icon red-icon">⌘</span>
+                            <span class="mode-number">MODE 02</span>
+                        </div>
+                        <h3>Single File Explanation</h3>
+                        <p>Select a particular file and let AI explain its purpose, code, execution and concepts.</p>
+                        <div class="mode-footer"><span>Explore selected file</span><span>↗</span></div>
+                    </button>
+                </div>
+
+                <div class="file-selection hidden" id="fileSelection">
+                    <div class="file-selection-heading">
+                        <div>
+                            <span class="panel-label">03 / FILE EXPLORER</span>
+                            <h3>Select a file to explain</h3>
+                        </div>
+                        <span class="file-count" id="fileCount">0 FILES</span>
+                    </div>
+
+                    <div class="file-explorer">
+                        <div class="file-explorer-top">
+                            <span>⌘ REPOSITORY FILES</span>
+                            <span id="selectedFileLabel">NO FILE SELECTED</span>
+                        </div>
+                        <div id="fileList" class="file-list">
+                            <p class="empty-files">Connect a repository to explore its files.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="run-options">
+                    <div class="language-option">
+                        <label for="languageSelect">RESPONSE LANGUAGE</label>
+                        <select id="languageSelect">
+                            <option value="English">English</option>
+                            <option value="Hinglish">Hinglish</option>
+                        </select>
+                    </div>
+                    <button class="primary-button run-button" id="runBtn" disabled>
+                        <span id="runButtonText">Generate Repository Summary</span>
+                        <span>✳</span>
+                    </button>
+                </div>
+
+                <p class="workspace-note">✳ AI-generated insights may take a few moments. Keep this page open during analysis.</p>
+            </div>
+
+            <!-- LOADER -->
+            <div class="analysis-loader hidden" id="analysisLoader">
+                <div class="loader-orbit">
+                    <div class="loader-core">R<span>.</span></div>
+                </div>
+                <h3 id="loaderTitle">Analyzing your repository</h3>
+                <p id="loaderDescription">Mapping files and understanding project structure...</p>
+                <div class="loader-progress"><span></span></div>
+                <div class="loader-steps">
+                    <span class="loader-step active">01. FETCHING</span>
+                    <span class="loader-step">02. ANALYZING</span>
+                    <span class="loader-step">03. GENERATING</span>
+                </div>
+            </div>
+
+            <!-- RESULT -->
+            <div class="result-panel hidden" id="resultPanel">
+                <div class="result-top">
+                    <div>
+                        <span class="panel-label">✳ REPOSAGE AI / ANALYSIS COMPLETE</span>
+                        <h2 id="resultTitle">Repository Insights</h2>
+                        <p id="resultMeta">Your AI-generated explanation</p>
+                    </div>
+                    <button class="secondary-button copy-result" id="copyResult">▣ Copy response</button>
+                </div>
+                <div class="result-content" id="resultContent"></div>
+                <div class="result-bottom">
+                    <span>✳ GENERATED BY REPOSAGE AI</span>
+                    <button class="text-button" id="newAnalysis">↻ Start another analysis</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section class="about section" id="about">
+            <div class="section-heading reveal">
+                <div class="eyebrow"><span class="live-dot"></span> BEHIND THE INTELLIGENCE</div>
+                <h2>Not just reading code.<br><span class="gradient-text">Understanding it.</span></h2>
+                <p>RepoSage is designed to make unfamiliar codebases easier to explore and understand.</p>
+            </div>
+
+            <div class="about-grid">
+                <article class="about-card reveal">
+                    <span class="about-icon">◈</span>
+                    <span class="panel-label">01 / UNDERSTAND</span>
+                    <h3>Repository Intelligence</h3>
+                    <p>Get a structured overview of your project, its important files, technologies and architecture.</p>
+                </article>
+                <article class="about-card reveal">
+                    <span class="about-icon red-icon">⌘</span>
+                    <span class="panel-label">02 / EXPLORE</span>
+                    <h3>File-Level Clarity</h3>
+                    <p>Choose individual source files and understand what they do, how they work and why they matter.</p>
+                </article>
+                <article class="about-card reveal">
+                    <span class="about-icon">✳</span>
+                    <span class="panel-label">03 / LEARN</span>
+                    <h3>Beginner-Friendly AI</h3>
+                    <p>Understand technical concepts through structured explanations in English or Hinglish.</p>
+                </article>
+            </div>
+
+            <div class="about-statement reveal">
+                <span>THE IDEA</span>
+                <p>"Every developer deserves to understand the code they work with — even when the repository is completely new."</p>
+                <div class="statement-line"></div>
+                <small>REPOSAGE / BUILT FOR DEVELOPERS</small>
+            </div>
+        </section>
+
+        <!-- HOW TO USE -->
+        <section class="how section" id="how">
+            <div class="section-heading reveal">
+                <div class="eyebrow"><span class="live-dot"></span> SIMPLE WORKFLOW</div>
+                <h2>Four steps.<br><span class="gradient-text">A clearer codebase.</span></h2>
+                <p>Start exploring a repository in just a few steps.</p>
+            </div>
+
+            <div class="steps">
+                <article class="step-card reveal">
+                    <span class="step-number">01</span>
+                    <div class="step-icon">↗</div>
+                    <h3>Paste GitHub URL</h3>
+                    <p>Enter the URL of the public GitHub repository you want to understand.</p>
+                </article>
+                <article class="step-card reveal">
+                    <span class="step-number">02</span>
+                    <div class="step-icon">◈</div>
+                    <h3>Connect Repository</h3>
+                    <p>RepoSage fetches repository information and its available file structure.</p>
+                </article>
+                <article class="step-card reveal">
+                    <span class="step-number">03</span>
+                    <div class="step-icon">⌘</div>
+                    <h3>Choose AI Mode</h3>
+                    <p>Select a complete repository summary or explanation of an individual file.</p>
+                </article>
+                <article class="step-card reveal">
+                    <span class="step-number">04</span>
+                    <div class="step-icon">✳</div>
+                    <h3>Explore Insights</h3>
+                    <p>Read, understand and copy your structured AI-generated explanation.</p>
+                </article>
+            </div>
+
+            <div class="how-note reveal">
+                <span>!</span>
+                <div>
+                    <strong>A quick note</strong>
+                    <p>Use a public GitHub repository. AI explanations are based on the files and repository information successfully retrieved by RepoSage.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <a href="#home" class="brand">
+            <span class="brand-icon">R<span>.</span></span>
+            <span>Repo<span class="brand-accent">Sage</span></span>
+        </a>
+        <p>Decode repositories. Understand code. Build better.</p>
+        <div class="footer-bottom">
+            <span>© 2026 RepoSage · AI-powered repository intelligence</span>
+            <a href="#home">BACK TO TOP ↑</a>
+        </div>
+    </footer>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
