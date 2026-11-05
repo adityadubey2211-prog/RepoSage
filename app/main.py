@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.schemas.repository import RepositoryRequest, SelectedFilesRequest, FileExplanationRequest
 from app.schemas.repository_response import(
@@ -23,7 +24,16 @@ app = FastAPI(
     version=settings.VERSION,
     debug=settings.DEBUG
 )
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://127.0.0.1:5500",
+        "http://localhost:5500"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 @app.get("/")
 def home():
     return {
