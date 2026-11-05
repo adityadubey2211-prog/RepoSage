@@ -12,9 +12,10 @@ from app.services.github_service import (
     get_repository_tree,
     get_file_content,
     categorize_files,
-    get_selected_file_contents
+    get_selected_file_contents,
+    select_important_files
 )
-from app.services.ai_service import generate_file_explanation
+from app.services.ai_service import generate_file_explanation, generate_repository_summary
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -135,3 +136,58 @@ def explain_repository_file(
         "language": request.language,
         "explanation": explanation
     }
+    
+@app.post("/repositories/{owner}/{repo}/summarize")
+def summarize_repository(owner: str, repo: str, language: str = "English"):
+
+    repository_data = get_repository(owner, repo)
+
+    if repository_data is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Repository not found"
+        )
+
+    branch = repository_data["default_branch"]
+
+    files = get_repository_tree(owner, repo, branch)
+
+    if files is None:
+        raise HTTPException(
+            status_code=500,
+            detail="Unable to fetch repository files"
+        )
+
+    important_files = select_important_files(files)
+
+    file_contents = get_selected_file_contents(
+        owner,
+        repo,
+        important_files
+    )
+
+    if not file_contents:
+        raise HTTPException(
+            status_code=400,
+            detail="No readable files found"
+        )
+
+    try:
+        summary = generate_repository_summary(
+            repository_data,
+            file_contents,
+            language
+        )
+
+        return {
+            "message": "Repository summarized successfully",
+            "repository": repository_data["full_name"],
+            "files_analyzed": len(file_contents),
+            "summary": summary
+        }
+
+    except Exception as error:
+        raise HTTPException(
+            status_code=500,
+            detail=f"AI summary generation failed: {str(error)}"
+        )

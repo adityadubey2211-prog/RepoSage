@@ -64,3 +64,59 @@ Rules:
     )
 
     return response.text
+
+
+
+def generate_repository_summary(repository_data, file_contents, language="English"):
+
+    project_files = ""
+
+    for file in file_contents:
+        project_files += f"""
+        FILE PATH: {file['path']}
+
+        FILE CONTENT:
+        {file['content']}
+
+        -------------------------
+        """
+
+    prompt = f"""
+    You are RepoSage, an expert software architect and programming tutor.
+
+    Analyze the provided GitHub repository.
+
+    Repository Information:
+    {repository_data}
+
+    Repository Source Files:
+    {project_files}
+
+    Explain the repository in {language}.
+
+    Follow this structure:
+
+    1. 📌 Project Overview
+    2. 🏗️ Architecture & Folder Structure
+    3. 📂 Important Files and Their Roles
+    4. 🔄 Application Execution Flow
+    5. 🛠️ Technologies and Dependencies
+    6. 🔗 How Components Work Together
+    7. 📝 Final Project Summary
+
+    Rules:
+    - Explain in simple beginner-friendly language.
+    - Use meaningful emojis.
+    - Explain technical concepts wherever necessary.
+    - Base explanations only on the provided repository information and file contents.
+    - Never invent missing functionality or dependencies.
+    - Clearly mention when information is unavailable.
+    - Do not claim to have analyzed files whose contents were not provided.
+    """
+
+    response = client.models.generate_content(
+        model="gemini-3.1-flash-lite",
+        contents=prompt
+    )
+
+    return response.text
