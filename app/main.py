@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from app.core.config import settings
-from app.schemas.repository import RepositoryRequest, SelectedFilesRequest
+from app.schemas.repository import RepositoryRequest, SelectedFilesRequest, FileExplanationRequest
 from app.schemas.repository_response import(
     RepositoryResponse,
     FileContentResponse
@@ -14,6 +14,7 @@ from app.services.github_service import (
     categorize_files,
     get_selected_file_contents
 )
+from app.services.ai_service import generate_file_explanation
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -101,4 +102,36 @@ def fetch_selected_files(
         "message": "Selected files fetched successfully",
         "total_files": len(file_contents),
         "files": file_contents
+    }
+    
+    
+@app.post("/repositories/{owner}/{repo}/explain-file")
+def explain_repository_file(
+    owner: str,
+    repo: str,
+    request: FileExplanationRequest
+):
+    content = get_file_content(
+        owner,
+        repo,
+        request.file_path
+    )
+
+    if content is None:
+        raise HTTPException(
+            status_code=404,
+            detail="File not found or content unavailable"
+        )
+
+    explanation = generate_file_explanation(
+        request.file_path,
+        content,
+        request.language
+    )
+
+    return {
+        "message": "File explained successfully",
+        "file_path": request.file_path,
+        "language": request.language,
+        "explanation": explanation
     }

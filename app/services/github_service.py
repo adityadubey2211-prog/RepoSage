@@ -174,3 +174,66 @@ def categorize_files(files):
         "documentation_files": documentation_files,
         "config_files": config_files
     }
+    
+def select_important_files(files):
+
+    important_files = []
+
+    priority_files = [
+        "readme.md",
+        "requirements.txt",
+        "package.json",
+        "pyproject.toml",
+        "main.py",
+        "app.py",
+        "server.py",
+        "manage.py",
+        "dockerfile"
+    ]
+
+    source_extensions = (
+        ".py", ".js", ".ts", ".jsx", ".tsx",
+        ".cpp", ".c", ".java", ".go", ".rs",
+        ".php", ".rb", ".cs"
+    )
+
+    ignored_folders = (
+        "node_modules", "venv", ".venv",
+        "__pycache__", ".git", "dist", "build"
+    )
+
+    # Step 1: Select priority files
+    for file in files:
+
+        if file["type"] != "blob":
+            continue
+
+        path = file["path"]
+        filename = path.split("/")[-1].lower()
+
+        if any(folder in path.lower().split("/") for folder in ignored_folders):
+            continue
+
+        if filename in priority_files:
+            if path not in important_files:
+                important_files.append(path)
+
+    # Step 2: Select additional source files
+    for file in files:
+
+        if file["type"] != "blob":
+            continue
+
+        path = file["path"]
+
+        if any(folder in path.lower().split("/") for folder in ignored_folders):
+            continue
+
+        if path.lower().endswith(source_extensions):
+            if path not in important_files:
+                important_files.append(path)
+
+        if len(important_files) >= 15:
+            break
+
+    return important_files
