@@ -1,8 +1,7 @@
 from pydantic import BaseModel, HttpUrl
 from typing import Optional
 
-
-class RepositoryResponse(BaseModel):
+class RepositoryData(BaseModel):
     name: str
     full_name: str
     description: Optional[str] = None
@@ -10,9 +9,17 @@ class RepositoryResponse(BaseModel):
     language: Optional[str] = None
     html_url: str
     forks_count: int
-    ope_issues_count: int
+    open_issues_count: int
     
+class RepositoryFile(BaseModel):
+    path:str
+    type:str
     
-class RepositoryRequest(BaseModel):
+class RepositoryResponse(BaseModel):
     message: str
-    repository_data: RepositoryResponse
+    repository_data: RepositoryData
+    files: list[RepositoryFile]
+
+class FileContentResponse(BaseModel):
+    path:str
+    content:str

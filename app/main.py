@@ -1,9 +1,16 @@
 from fastapi import FastAPI, HTTPException
 from app.core.config import settings
 from app.schemas.repository import RepositoryRequest
+from app.schemas.repository_response import(
+    RepositoryResponse,
+    FileContentResponse
+)
+
 from app.services.github_service import (
     extract_repo_details,
-    get_repository
+    get_repository,
+    get_repository_tree,
+    get_file_content,
 )
 
 app = FastAPI(
@@ -27,7 +34,7 @@ def health_check():
         "version": settings.VERSION
     }
 
-@app.post("/repositories")
+@app.post("/repositories", response_model=RepositoryResponse)
 def analyze_repository(repository: RepositoryRequest):
     try:
         owner, repo = extract_repo_details(repository.url)
@@ -38,12 +45,33 @@ def analyze_repository(repository: RepositoryRequest):
                 detail = "Repository not found or GitHub API request failed"
             )
             
-        return{
-            "message" : "Repository fetched successfully",
-            "repository_data" : repository_data
-        }
+        branch = repository_data["default_branch"]
+        files = get_repository_tree(owner, repo, branch)
+        if files is None:
+            raise HTTPException(
+                status_code = 404,
+                detail = "Repository tree not found or GitHub API request failed"
+            )
+        return RepositoryResponse(
+            message="Repository fetched successfully",
+            repository_data=repository_data,
+            files=files
+        )
     except ValueError as error:
         raise HTTPException(
             status_code = 400,
             detail = str(error)
         )
+        
+@app.get("/repositories/{owner}/{repo}/files/{file_path:path}", response_model=FileContentResponse)
+def fetch_file_content(owner: str, repo: str, file_path: str):
+    content = get_file_content(owner, repo, file_path)
+    if content is None:
+        raise HTTPException(
+            status_code = 404,
+            detail = "File not found or GitHub API request failed"
+        )
+    return FileContentResponse(
+        path=file_path,
+        content=content
+    )
