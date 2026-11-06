@@ -129,6 +129,136 @@ function showToast(message, type = "success") {
 }
 
 // ==========================================
+// CONNECT SUCCESS POPUP
+// ==========================================
+
+const POPUP_DURATION = 6000;
+
+let popupEl = null;
+let popupTimer = null;
+let popupRemaining = POPUP_DURATION;
+let popupStartedAt = 0;
+let popupLastFocus = null;
+
+function buildPopup() {
+    const overlay = document.createElement("div");
+    overlay.className = "connect-popup";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-labelledby", "popupTitle");
+
+    overlay.innerHTML = `
+        <div class="popup-card">
+            <button class="popup-close" type="button" aria-label="Close">×</button>
+            <div class="popup-check">✓</div>
+            <span class="popup-label">✳ CONNECTION ESTABLISHED</span>
+            <h3 id="popupTitle">Repository connected</h3>
+            <div class="popup-repo" id="popupRepo"></div>
+            <p class="popup-msg" id="popupMsg"></p>
+            <div class="popup-stats">
+                <span>★ <b id="popupStars">0</b></span>
+                <span>⑂ <b id="popupForks">0</b></span>
+                <span>▤ <b id="popupFiles">0</b> files</span>
+            </div>
+            <button class="primary-button popup-continue" type="button">
+                <span>Continue</span> <span>↗</span>
+            </button>
+            <div class="popup-timer"><span></span></div>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    const card = overlay.querySelector(".popup-card");
+
+    overlay.addEventListener("click", (event) => {
+        if (event.target === overlay) hideConnectPopup();
+    });
+
+    overlay.querySelector(".popup-close").addEventListener("click", hideConnectPopup);
+
+    overlay.querySelector(".popup-continue").addEventListener("click", () => {
+        hideConnectPopup();
+        const target = document.querySelector(".mode-grid");
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    // Pause the auto-close timer while the card is hovered.
+    card.addEventListener("mouseenter", () => {
+        if (!popupTimer) return;
+        clearTimeout(popupTimer);
+        popupTimer = null;
+        popupRemaining -= Date.now() - popupStartedAt;
+    });
+
+    card.addEventListener("mouseleave", () => {
+        if (!overlay.classList.contains("show")) return;
+        startPopupTimer(Math.max(popupRemaining, 1200));
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && overlay.classList.contains("show")) {
+            hideConnectPopup();
+        }
+    });
+
+    return overlay;
+}
+
+function startPopupTimer(ms) {
+    clearTimeout(popupTimer);
+    popupRemaining = ms;
+    popupStartedAt = Date.now();
+    popupTimer = setTimeout(hideConnectPopup, ms);
+}
+
+function showConnectPopup(data) {
+    if (!popupEl) popupEl = buildPopup();
+
+    const repo = (data && data.repository_data) || {};
+    const fileCount = state.files.filter((file) => file.type === "blob").length;
+
+    $("popupRepo").textContent =
+        repo.full_name || repo.name || `${state.owner}/${state.repo}`;
+
+    $("popupMsg").textContent =
+        "Your repository is ready. Choose a mode below and let AI decode it for you.";
+
+    $("popupStars").textContent = Number(repo.stargazers_count || 0).toLocaleString();
+    $("popupForks").textContent = Number(repo.forks_count || 0).toLocaleString();
+    $("popupFiles").textContent = fileCount.toLocaleString();
+
+    popupLastFocus = document.activeElement;
+
+    const card = popupEl.querySelector(".popup-card");
+
+    // Restart the progress-bar animation on every open.
+    popupEl.classList.remove("show");
+    void popupEl.offsetWidth;
+    popupEl.classList.add("show");
+
+    // Play the rings + sweep effect once on open (hover still works too).
+    card.classList.add("fx");
+    setTimeout(() => card.classList.remove("fx"), 1500);
+
+    startPopupTimer(POPUP_DURATION);
+
+    popupEl.querySelector(".popup-continue").focus({ preventScroll: true });
+}
+
+function hideConnectPopup() {
+    if (!popupEl) return;
+
+    clearTimeout(popupTimer);
+    popupTimer = null;
+    popupEl.classList.remove("show");
+
+    if (popupLastFocus && typeof popupLastFocus.focus === "function") {
+        popupLastFocus.focus({ preventScroll: true });
+    }
+}
+
+// ==========================================
 // API HELPER
 // ==========================================
 
@@ -263,7 +393,7 @@ async function connectRepository() {
         $("runBtn").disabled = false;
         updateRunButton();
 
-        showToast("Repository connected successfully!");
+        showConnectPopup(data);
 
         $("fileSelection").classList.add("hidden");
 
