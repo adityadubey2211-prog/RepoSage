@@ -30,6 +30,11 @@
     --grid-line: rgba(142, 197, 255, .07);
 
     --ease: cubic-bezier(.2, .8, .2, 1);
+
+    /* card hover FX */
+    --ring: rgba(255, 255, 255, .17);
+    --sweep-core: rgba(255, 255, 255, .30);
+    --sweep-edge: rgba(255, 255, 255, .08);
 }
 
 [data-theme="light"] {
@@ -55,6 +60,10 @@
     --aurora-2: rgba(240, 90, 110, .12);
     --aurora-3: rgba(140, 90, 255, .14);
     --grid-line: rgba(42, 107, 240, .08);
+
+    --ring: rgba(42, 107, 240, .24);
+    --sweep-core: rgba(42, 107, 240, .20);
+    --sweep-edge: rgba(42, 107, 240, .06);
 }
 
 * {
@@ -776,24 +785,13 @@ html::after {
     box-shadow: inset 0 2px 0 rgba(var(--dot), 0), 0 0 0 rgba(0, 0, 0, 0);
     transition: translate .4s var(--ease), border-color .35s, background-color .35s, box-shadow .45s;
 }
-.mode-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    opacity: 0;
-    transition: opacity .45s;
-    background: radial-gradient(420px circle at 50% 0%, rgba(var(--dot), .16), transparent 62%);
-}
 .mode-card:hover {
     translate: 0 -7px;
     border-color: rgba(var(--dot), .55);
     box-shadow: inset 0 2px 0 var(--accent), 0 26px 60px var(--shadow);
 }
-.mode-card:hover::before { opacity: 1; }
 .mode-card.selected { border-color: var(--accent); background: rgba(110, 170, 255, .07); box-shadow: inset 0 2px 0 var(--accent), inset 0 0 35px rgba(110, 170, 255, .04); }
-.mode-card.selected::after { content: "✓"; position: absolute; right: 18px; top: 18px; color: var(--accent); font-weight: 700; }
-.mode-card.selected .mode-number { margin-right: 30px; }
+.mode-card.selected .mode-number::after { content: "✓"; margin-left: 10px; color: var(--accent); font-weight: 700; font-size: 13px; }
 .mode-card-top { display: flex; justify-content: space-between; align-items: center; }
 .mode-icon { display: inline-block; color: var(--accent); font-size: 28px; transition: transform .5s var(--ease), text-shadow .4s; }
 .mode-card:hover .mode-icon { transform: scale(1.18) rotate(-10deg); text-shadow: 0 0 22px currentColor; }
@@ -892,30 +890,6 @@ html::after {
         background-color .35s,
         box-shadow .45s;
 }
-/* spotlight */
-.about-card::before, .step-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    opacity: 0;
-    transition: opacity .45s;
-    background: radial-gradient(420px circle at 50% 0%, rgba(var(--dot), .17), transparent 62%);
-}
-/* shine sweep */
-.about-card::after, .step-card::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -120%;
-    width: 60%;
-    height: 100%;
-    z-index: -1;
-    pointer-events: none;
-    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .08), transparent);
-    transform: skewX(-18deg);
-    transition: left .9s var(--ease);
-}
 .about-card:hover, .step-card:hover {
     translate: 0 -10px;
     border-color: rgba(var(--dot), .55);
@@ -924,8 +898,6 @@ html::after {
         0 30px 70px var(--shadow),
         0 0 50px rgba(var(--dot), .09);
 }
-.about-card:hover::before, .step-card:hover::before { opacity: 1; }
-.about-card:hover::after, .step-card:hover::after { left: 140%; }
 
 .about-card { padding: 30px; }
 .about-icon { display: block; width: fit-content; font-size: 29px; color: var(--accent); margin-bottom: 30px; transition: transform .5s var(--ease), text-shadow .4s; }
@@ -940,6 +912,66 @@ html::after {
 .statement-line { height: 2px; width: 60px; background: var(--red); margin: 20px auto; transition: width .6s var(--ease); }
 .about-statement:hover .statement-line { width: 140px; }
 .about-statement small { font: 10.5px "DM Mono"; color: var(--muted); letter-spacing: 2px; }
+
+/* ==========================================================
+   CARD HOVER FX — white concentric rings + tilted shaded sweep
+   ========================================================== */
+
+.repo-info { position: relative; }
+.floating-card, .repo-info { isolation: isolate; overflow: hidden; }
+
+/* concentric circles */
+.about-card::before, .step-card::before, .mode-card::before,
+.floating-card::before, .repo-info::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: inherit;
+    opacity: 0;
+    transform: scale(.45);
+    transform-origin: 88% 12%;
+    background:
+        repeating-radial-gradient(circle at 88% 12%, transparent 0 22px, var(--ring) 22px 23.5px),
+        radial-gradient(380px circle at 88% 12%, rgba(var(--dot), .16), transparent 65%);
+    -webkit-mask-image: radial-gradient(circle at 88% 12%, #000 0, rgba(0, 0, 0, .6) 45%, transparent 88%);
+    mask-image: radial-gradient(circle at 88% 12%, #000 0, rgba(0, 0, 0, .6) 45%, transparent 88%);
+    transition: opacity .6s ease, transform .9s var(--ease);
+}
+.about-card:hover::before, .step-card:hover::before, .mode-card:hover::before,
+.floating-card:hover::before, .repo-info:hover::before {
+    opacity: 1;
+    transform: none;
+}
+
+/* tilted shaded bar: top-left -> bottom-right */
+.about-card::after, .step-card::after, .mode-card::after,
+.floating-card::after, .repo-info::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: inherit;
+    background-image: linear-gradient(135deg,
+        transparent 43%,
+        var(--sweep-edge) 47%,
+        var(--sweep-core) 50%,
+        var(--sweep-edge) 53%,
+        transparent 57%);
+    background-size: 300% 300%;
+    background-repeat: no-repeat;
+    background-position: 100% 100%;
+}
+.about-card:hover::after, .step-card:hover::after, .mode-card:hover::after,
+.floating-card:hover::after, .repo-info:hover::after {
+    animation: barSweep 1.1s var(--ease) both;
+}
+@keyframes barSweep {
+    from { background-position: 100% 100%; }
+    to   { background-position: 0% 0%; }
+}
 
 /* HOW TO USE */
 
