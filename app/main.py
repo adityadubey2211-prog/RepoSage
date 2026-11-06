@@ -6,7 +6,7 @@ from app.schemas.repository_response import(
     RepositoryResponse,
     FileContentResponse
 )
-
+from app.routers.chat import router as chat_router
 from app.services.github_service import (
     extract_repo_details,
     get_repository,
@@ -34,6 +34,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(chat_router)
 @app.get("/")
 def home():
     return {
