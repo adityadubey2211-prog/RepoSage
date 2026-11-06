@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#070b12">
+
+    <title>RepoSage AI — Chat</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="chat.css">
+</head>
+
+<body>
+
+    <div class="chat-app">
+
+        <!-- SIDEBAR -->
+        <aside class="chat-sidebar" id="chatSidebar">
+
+            <div class="sidebar-header">
+                <a href="index.html" class="brand">
+                    <span class="brand-icon">R<span>.</span></span>
+                    <span>Repo<span class="brand-accent">Sage</span></span>
+                </a>
+
+                <button id="closeSidebar" class="icon-button">×</button>
+            </div>
+
+            <button class="new-chat-button" id="newChatBtn">
+                <span>＋</span> New conversation
+            </button>
+
+            <div class="sidebar-section">
+                <span class="sidebar-label">YOUR CONVERSATIONS</span>
+
+                <div class="chat-history" id="chatHistory">
+                    <p class="history-empty">Your conversations will appear here.</p>
+                </div>
+            </div>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-repository" id="sidebarRepository">
+                    <span class="repo-indicator"></span>
+
+                    <div>
+                        <small>CONNECTED REPOSITORY</small>
+                        <strong id="connectedRepoName">Not connected</strong>
+                    </div>
+                </div>
+
+                <a href="index.html" class="back-link">
+                    ← Back to Workspace
+                </a>
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN CHAT -->
+        <main class="chat-main">
+
+            <!-- TOPBAR -->
+            <header class="chat-topbar">
+
+                <div class="topbar-left">
+                    <button class="icon-button menu-button" id="openSidebar">
+                        ☰
+                    </button>
+
+                    <div>
+                        <span class="topbar-label">REPOSAGE AI</span>
+                        <strong>Repository Assistant</strong>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+
+                    <div class="repository-selector">
+                        <span>⌘</span>
+                        <span id="topbarRepoName">No repository</span>
+                    </div>
+
+                    <select id="chatLanguage" aria-label="Response language">
+                        <option value="English">English</option>
+                        <option value="Hinglish">Hinglish</option>
+                    </select>
+
+                    <button class="icon-button" id="chatThemeToggle">
+                        ☀
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- MESSAGE AREA -->
+            <section class="chat-content" id="chatContent">
+
+                <div class="welcome-screen" id="welcomeScreen">
+
+                    <div class="welcome-symbol">
+                        R<span>.</span>
+                    </div>
+
+                    <span class="welcome-eyebrow">
+                        ✳ YOUR REPOSITORY IS READY
+                    </span>
+
+                    <h1>
+                        Understand your code.<br>
+                        <span>One conversation at a time.</span>
+                    </h1>
+
+                    <p>
+                        Ask questions about your repository, explore code,
+                        understand architecture or discuss any programming concept.
+                    </p>
+
+                    <div class="suggestion-grid">
+
+                        <button class="suggestion-card" data-prompt="Explain the overall architecture of this repository.">
+                            <span>◈</span>
+                            <strong>Understand architecture</strong>
+                            <small>Explore how the project works</small>
+                        </button>
+
+                        <button class="suggestion-card" data-prompt="Explain the main execution flow of this project.">
+                            <span>⌘</span>
+                            <strong>Execution flow</strong>
+                            <small>Understand how everything connects</small>
+                        </button>
+
+                        <button class="suggestion-card" data-prompt="Which are the most important files in this repository and why?">
+                            <span>▤</span>
+                            <strong>Explore important files</strong>
+                            <small>Find the important parts of the codebase</small>
+                        </button>
+
+                        <button class="suggestion-card" data-prompt="Help me understand the technologies used in this project.">
+                            <span>✳</span>
+                            <strong>Learn the tech stack</strong>
+                            <small>Understand the tools and technologies</small>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CHAT MESSAGES -->
+                <div class="messages-container hidden" id="messagesContainer">
+                </div>
+
+            </section>
+
+
+            <!-- INPUT AREA -->
+            <footer class="chat-footer">
+
+                <div class="chat-input-wrapper">
+
+                    <textarea
+                        id="chatInput"
+                        placeholder="Ask anything about your repository..."
+                        rows="1"
+                        maxlength="5000"
+                    ></textarea>
+
+                    <div class="input-toolbar">
+
+                        <span class="input-hint">
+                            ↵ Send · Shift + ↵ New line
+                        </span>
+
+                        <button id="sendMessageBtn" class="send-button" disabled>
+                            <span>Send</span>
+                            <span>↑</span>
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <p class="chat-disclaimer">
+                    RepoSage AI can make mistakes. Verify important code suggestions.
+                </p>
+
+            </footer>
+
+        </main>
+
+    </div>
+
+
+    <div class="toast" id="chatToast"></div>
+
+    <script src="chat.js"></script>
+
+</body>
+</html>

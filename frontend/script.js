@@ -384,6 +384,16 @@ async function connectRepository() {
         state.selectedFile = "";
         state.isConnected = true;
 
+        // Save repository for the chatbot page
+        localStorage.setItem(
+            "reposage-connected-repo",
+            JSON.stringify({
+                owner: state.owner,
+                repo: state.repo,
+                full_name: state.repository.full_name ||
+                    `${state.owner}/${state.repo}`
+            })
+        );
         displayRepository(data);
         displayFiles();
 
