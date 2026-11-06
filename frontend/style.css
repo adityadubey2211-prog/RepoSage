@@ -1396,3 +1396,14 @@ html::after {
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+
+.ai-chat-link {
+    color: #7dd3fc !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.ai-chat-link:hover {
+    color: #38bdf8 !important;
+    text-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+}
